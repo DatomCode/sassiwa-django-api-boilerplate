@@ -10,5 +10,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True }
         }
 
-    def create(self, validated_data):
-        return CustomUser.objects.create_user(**validated_data)
+   
