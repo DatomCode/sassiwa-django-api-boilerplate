@@ -4,15 +4,15 @@ from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email=models.EmailField()
-    username = models.CharField()
-    fullname = models.CharField()
+    email=models.EmailField(unique=True, blank=False, null=False)
+    username = models.CharField(max_length=150)
+    fullname = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-    USERNAME_FIELDS = 'email'
-    REQUIRED_FIELDS = ['email', 'username']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
