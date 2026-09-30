@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+load_dotenv(os.path.join('.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -81,7 +81,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
-
+print("DB_NAME:", os.getenv("DB_NAME"))
+print("DB_USER:", os.getenv("DB_USER"))
+print("DB_HOST:", os.getenv("DB_HOST"))
+print("DB_PORT:", os.getenv("DB_PORT"))
+print("DB_PASSWORD EXISTS:", bool(os.getenv("DB_PASSWORD")))
 
 DATABASES = {
     'default': {
