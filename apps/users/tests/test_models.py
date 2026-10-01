@@ -11,8 +11,9 @@ class CustomUserModelTest(TestCase):
 
     def test_create_user(self):
         user = CustomUser.objects.create_user(
-            email=self.email,
-            password=self.password
+            email = self.email,
+            username = self.username,
+            password = self.password
         )
 
         self.assertEqual(user.email, self.email)
@@ -34,11 +35,11 @@ class CustomUserModelTest(TestCase):
     def test_create_superuser(self):
         user = CustomUser.objects.create_superuser(
             email="admin@example.com",
-            username="admin",
-            password="password123",
+            username="testadmin",
+            password="password123"
         )
 
-        self.assertEqual(user.email, self.email)
+        self.assertEqual(user.email, "admin@example.com")
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
