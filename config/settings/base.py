@@ -13,24 +13,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-load_dotenv(os.path.join(".env"))
+load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-yi5kr!i2f9sv%torah)tisvf=0b1$i^%mi)l+mjpv7qt)-@3ld"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Environment-specific modules provide their own explicit values for these
+# settings. Keeping the base configuration safe makes it harder to deploy with
+# development defaults by mistake.
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -91,7 +89,7 @@ DATABASES = {
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
         "OPTIONS": {
-            "sslmode": "require",
+            "sslmode": os.getenv("DB_SSLMODE", "prefer"),
         },
     }
 }
