@@ -3,17 +3,14 @@ from apps.users.models import CustomUser
 
 
 class CustomUserModelTest(TestCase):
-
     def setUp(self):
         self.email = "testuser@gmail.com"
-        self.username ="testuser1"
+        self.username = "testuser1"
         self.password = "password123"
 
     def test_create_user(self):
         user = CustomUser.objects.create_user(
-            email = self.email,
-            username = self.username,
-            password = self.password
+            email=self.email, username=self.username, password=self.password
         )
 
         self.assertEqual(user.email, self.email)
@@ -24,9 +21,7 @@ class CustomUserModelTest(TestCase):
 
     def test_password_is_hashed(self):
         user = CustomUser.objects.create_user(
-            email = self.email,
-            username = self.username,
-            password = self.password
+            email=self.email, username=self.username, password=self.password
         )
 
         self.assertNotEqual(user.password, self.password)
@@ -34,9 +29,7 @@ class CustomUserModelTest(TestCase):
 
     def test_create_superuser(self):
         user = CustomUser.objects.create_superuser(
-            email="admin@example.com",
-            username="testadmin",
-            password="password123"
+            email="admin@example.com", username="testadmin", password="password123"
         )
 
         self.assertEqual(user.email, "admin@example.com")
@@ -44,6 +37,3 @@ class CustomUserModelTest(TestCase):
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.check_password(self.password))
-
-        
-        
