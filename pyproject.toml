@@ -1,0 +1,2 @@
+[tool.ruff.lint.per-file-ignores]
+"**/settings/*.py" = ["F403", "F405", "F401"]
