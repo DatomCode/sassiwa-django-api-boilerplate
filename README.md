@@ -1,47 +1,79 @@
 # Django/DRF Boilerplate
 
-A reusable Django and Django REST Framework boilerplate designed to provide a clean, consistent foundation for building APIs.
+A reusable Django and Django REST Framework boilerplate that gives you a clean, consistent foundation for building APIs, so you can skip the repetitive setup and get straight to your features.
 
-The goal is to handle the repetitive project setup so you can focus on building the actual features and business logic of your application.
+> 🚧 **Under active development.** The structure and features are evolving. See the [roadmap](docs/roadmap.md) and open issues for what's planned.
 
 ## Features
 
-* Django
-* Django REST Framework
-* Custom User Model
-* Email-based authentication foundation
-* PostgreSQL
-* Environment-based configuration
-* Separate development and production settings
-* Docker and Docker Compose
-* Pytest testing setup
-* Pre-commit hooks
-* Code quality checks
-* GitHub Actions CI
-* Structured project layout
-* `.env.example` configuration template
+Currently implemented:
+
+- Django and Django REST Framework
+- Custom user model with an email-based authentication foundation
+- PostgreSQL configuration
+- Environment-based configuration with `.env.example`
+- Separate development and production settings
+- Pytest and pytest-django, with model tests
+- Pre-commit hooks
+- Ruff for linting and formatting
+
+Planned (not yet implemented): Docker and Docker Compose, GitHub Actions CI, JWT authentication, Redis, Celery, API documentation, caching, rate limiting, and production deployment configuration.
+
+## Quick Start
+
+```bash
+# 1. Clone and enter the project
+git clone <repository-url>
+cd django-boilerplate
+
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # macOS/Linux
+venv\Scripts\activate           # Windows
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Configure environment variables
+cp .env.example .env            # Windows PowerShell: Copy-Item .env.example .env
+# then edit .env with your values
+
+# 5. Migrate and run
+python manage.py migrate
+python manage.py runserver
+```
+
+Run the tests:
+
+```bash
+pytest
+```
+
+Set up pre-commit:
+
+```bash
+pre-commit install
+pre-commit run --all-files
+```
 
 ## Project Structure
 
+This is what exists in the repository today:
+
 ```text
 django-boilerplate/
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
 │
 ├── apps/
 │   └── users/
 │       ├── migrations/
 │       │   └── __init__.py
-│       │
 │       ├── tests/
 │       │   ├── __init__.py
 │       │   └── test_models.py
-│       │
 │       ├── __init__.py
 │       ├── admin.py
 │       ├── apps.py
+│       ├── manager.py
 │       ├── models.py
 │       ├── serializers.py
 │       ├── urls.py
@@ -53,402 +85,40 @@ django-boilerplate/
 │   │   ├── base.py
 │   │   ├── development.py
 │   │   └── production.py
-│   │
 │   ├── __init__.py
 │   ├── asgi.py
 │   ├── urls.py
 │   └── wsgi.py
 │
-├── tests/
-│   └── __init__.py
-│
-├── docker/
-│   └── ...
-│
 ├── .env.example
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── Dockerfile
-├── docker-compose.yml
 ├── manage.py
 ├── pyproject.toml
+├── pytest.ini
 ├── README.md
 └── requirements.txt
 ```
 
-## Architecture
+The structure the project is working towards (Docker, CI, and more) is described in [docs/architecture.md](docs/architecture.md).
 
-The project separates global configuration from application-specific business logic.
+## Documentation
 
-```text
-                    Django/DRF Boilerplate
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-           config/                        apps/
-              │                             │
-      Project configuration          Application logic
-              │                             │
-      ┌───────┼────────┐                  users/
-      │       │        │
-   base.py  dev.py  prod.py
-```
+Detailed documentation lives in the [`docs/`](docs/) directory:
 
-### `config/`
-
-Contains project-wide configuration such as:
-
-* Django settings
-* URL configuration
-* ASGI configuration
-* WSGI configuration
-
-### `apps/`
-
-Contains the actual Django applications and business logic.
-
-The boilerplate starts with a `users` application. Additional applications can be added depending on the project.
-
-For example:
-
-```text
-apps/
-├── users/
-├── payments/
-├── orders/
-└── products/
-```
-
-## Settings
-
-The settings are separated into three layers:
-
-```text
-config/settings/
-├── base.py
-├── development.py
-└── production.py
-```
-
-### `base.py`
-
-Contains settings shared across environments.
-
-Examples:
-
-* Installed applications
-* Middleware
-* Database configuration
-* Django REST Framework configuration
-* Custom user model
-* Static files
-* Internationalization
-
-### `development.py`
-
-Contains settings specific to local development.
-
-Examples:
-
-* `DEBUG=True`
-* Local hosts
-* Development email backend
-* Development-specific tools
-
-### `production.py`
-
-Contains settings specific to deployment.
-
-Examples:
-
-* `DEBUG=False`
-* Production hosts
-* Security settings
-* Production email configuration
-* Production-specific configuration
-
-Both environment-specific files inherit from `base.py`.
-
-```text
-development.py
-       │
-       ▼
-    base.py
-
-production.py
-       │
-       ▼
-    base.py
-```
-
-## Environment Variables
-
-Create a `.env` file using `.env.example` as a template.
-
-Example:
-
-```env
-SECRET_KEY=your-secret-key
-DEBUG=True
-
-POSTGRES_DB=your_database
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-
-ALLOWED_HOSTS=localhost,127.0.0.1
-```
-
-Do not commit your `.env` file to version control.
-
-The `.env.example` file should be committed so other developers know which environment variables are required.
-
-## Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone <repository-url>
-```
-
-Move into the project directory:
-
-```bash
-cd django-boilerplate
-```
-
-### 2. Create a virtual environment
-
-```bash
-python -m venv venv
-```
-
-Activate it on Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-On macOS/Linux:
-
-```bash
-source venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure environment variables
-
-Copy `.env.example` to `.env`:
-
-```bash
-cp .env.example .env
-```
-
-On Windows PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Update the values in `.env`.
-
-### 5. Run migrations
-
-```bash
-python manage.py migrate
-```
-
-### 6. Start the development server
-
-```bash
-python manage.py runserver
-```
-
-The API will be available at:
-
-```text
-http://127.0.0.1:8000/
-```
-
-## Running with Docker
-
-Build and start the services:
-
-```bash
-docker compose up --build
-```
-
-To run the containers in the background:
-
-```bash
-docker compose up -d
-```
-
-Stop the services:
-
-```bash
-docker compose down
-```
-
-The Docker setup is intended to provide a consistent development environment for Django and PostgreSQL.
-
-## Testing
-
-Tests are written using `pytest` and `pytest-django`.
-
-Run the test suite:
-
-```bash
-pytest
-```
-
-Run a specific test file:
-
-```bash
-pytest apps/users/tests/test_models.py
-```
-
-The test suite should cover important application behavior and help prevent regressions as the project grows.
-
-## Pre-commit
-
-Pre-commit runs automated checks before code is committed.
-
-Install the hooks:
-
-```bash
-pre-commit install
-```
-
-Run all checks manually:
-
-```bash
-pre-commit run --all-files
-```
-
-The configured checks are intended to help maintain:
-
-* Consistent formatting
-* Clean imports
-* Code quality
-* Consistent project standards
-
-## Continuous Integration
-
-GitHub Actions is used for continuous integration.
-
-The CI workflow runs automated checks when changes are pushed to GitHub or submitted through a pull request.
-
-The general workflow is:
-
-```text
-Push / Pull Request
-        │
-        ▼
-GitHub Actions
-        │
-        ├── Install dependencies
-        ├── Run code-quality checks
-        └── Run tests
-                │
-                ▼
-             Result
-```
-
-A failing check should be resolved before merging the changes.
-
-## Adding a New Application
-
-Create new Django applications inside the `apps/` directory.
-
-For example:
-
-```bash
-python manage.py startapp products apps/products
-```
-
-Your structure would become:
-
-```text
-apps/
-├── users/
-└── products/
-```
-
-Then add the application to `INSTALLED_APPS`.
-
-For larger projects, each application should contain its own models, serializers, views, URLs, and tests.
-
-## Development Workflow
-
-A typical development workflow looks like:
-
-```text
-Create feature
-      │
-      ▼
-Write code
-      │
-      ▼
-Write tests
-      │
-      ▼
-Run pytest
-      │
-      ▼
-Run pre-commit
-      │
-      ▼
-Commit changes
-      │
-      ▼
-Push to GitHub
-      │
-      ▼
-GitHub Actions
-      │
-      ▼
-Tests + quality checks
-```
-
-## Philosophy
-
-This boilerplate is intentionally kept simple.
-
-The goal is not to include every possible Django package or architecture pattern.
-
-Instead, it provides a solid foundation containing the common pieces needed when starting a Django/DRF API.
-
-Project-specific functionality should be added only when the application actually needs it.
-
-## Future Improvements
-
-Potential additions for future versions include:
-
-* JWT authentication
-* Redis
-* Celery
-* API documentation
-* Caching configuration
-* Rate limiting
-* Email services
-* Object storage
-* Production deployment configuration
-* More comprehensive integration tests
-
-These features are intentionally not part of the initial foundation.
+- [Architecture](docs/architecture.md): how the project is organised, and the target structure
+- [Configuration](docs/configuration.md): environment variables and settings
+- [Roadmap](docs/roadmap.md): what's done, in progress, and planned
 
 ## Contributing
 
-Contributions, suggestions, and improvements are welcome.
+Contributions are welcome. If you want to work on something, whether it's on the roadmap or your own idea, **please open an issue first** so the approach can be discussed before you start.
 
-If you find a bug or have an idea for improving the boilerplate, open an issue or submit a pull request.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process.
+
+## Philosophy
+
+This boilerplate is intentionally simple. It isn't trying to include every Django package or architecture pattern, just a solid, reliable starting point for a Django/DRF API. Project-specific functionality should be added only when it has a clear benefit.
 
 ## License
 
